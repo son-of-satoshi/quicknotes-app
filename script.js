@@ -23,13 +23,24 @@ function getReadableDate() {
   });
 }
 
+// Update the note count message correctly
+function updateNoteCount() {
+  const count = notes.length;
+  if (count === 0) {
+    noteCount.textContent = 'You have no notes yet.';
+  } else if (count === 1) {
+    noteCount.textContent = 'You have 1 note.';
+  } else {
+    noteCount.textContent = `You have ${count} notes.`;
+  }
+}
+
 // Render function rebuilding the list using createElement and textContent
 function render() {
   notesList.innerHTML = '';
 
   notes.forEach((note) => {
     const li = document.createElement('li');
-    // Map category name to lower-case for CSS border styling class
     li.className = `note-card category-${note.category.toLowerCase()}`;
 
     // Note text element (safe from XSS using textContent)
@@ -54,7 +65,7 @@ function render() {
     const dateSpan = document.createElement('span');
     dateSpan.textContent = note.createdAt;
 
-    // Delete button (fully functional in next task)
+    // Delete button
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.style.padding = '0.25rem 0.5rem';
@@ -78,24 +89,40 @@ function render() {
 
     notesList.appendChild(li);
   });
+
+  updateNoteCount();
 }
 
-// Placeholder delete function until Task 4
+// Delete note by id
 function deleteNote(id) {
   notes = notes.filter(note => note.id !== id);
   render();
 }
 
-// Form submission handler
+// Form submission handler with validation
 noteForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const textValue = noteInput.value.trim();
-  if (!textValue) return; // Basic guard for empty submit until validation task
+  const rawText = noteInput.value;
+
+  // Validation: empty or only spaces
+  if (rawText.trim() === '') {
+    errorMessage.textContent = 'Please type a note first.';
+    return;
+  }
+
+  // Validation: over 200 characters
+  if (rawText.length > 200) {
+    errorMessage.textContent = 'Notes must be 200 characters or fewer.';
+    return;
+  }
+
+  // Clear any existing error message if valid
+  errorMessage.textContent = '';
 
   const newNote = {
     id: Date.now(),
-    text: textValue,
+    text: rawText.trim(),
     category: noteCategory.value,
     createdAt: getReadableDate()
   };
@@ -104,7 +131,6 @@ noteForm.addEventListener('submit', (e) => {
   
   // Clear the input after adding
   noteInput.value = '';
-  errorMessage.textContent = '';
 
   render();
 });

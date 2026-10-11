@@ -7,8 +7,13 @@ const errorMessage = document.querySelector('#error-message');
 const noteCount = document.querySelector('#note-count');
 const searchInput = document.querySelector('#search-input');
 
-// Notes stored as an array of objects
-let notes = [];
+// Notes stored as an array of objects, loaded from localStorage if available
+let notes = JSON.parse(localStorage.getItem('quicknotes')) || [];
+
+// Helper function to save notes to localStorage
+function saveNotes() {
+  localStorage.setItem('quicknotes', JSON.stringify(notes));
+}
 
 // Helper function for a readable date and time
 function getReadableDate() {
@@ -39,7 +44,32 @@ function updateNoteCount() {
 function render() {
   notesList.innerHTML = '';
 
-  notes.forEach((note) => {
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  
+  // Filter notes based on search query (case-insensitive)
+  const filteredNotes = notes.filter(note => 
+    note.text.toLowerCase().includes(searchTerm)
+  );
+
+  // If search finds nothing and user typed a search term
+  if (filteredNotes.length === 0 && searchTerm !== '') {
+    const noMatchLi = document.createElement('li');
+    noMatchLi.textContent = 'No notes match your search.';
+    noMatchLi.style.textAlign = 'center';
+    noMatchLi.style.color = '#4b5563';
+    noMatchLi.style.padding = '1rem';
+    notesList.appendChild(noMatchLi);
+    updateNoteCount();
+    return;
+  }
+
+  // If there are no notes at all and no search term
+  if (notes.length === 0) {
+    updateNoteCount();
+    return;
+  }
+
+  filteredNotes.forEach((note) => {
     const li = document.createElement('li');
     li.className = `note-card category-${note.category.toLowerCase()}`;
 
@@ -96,6 +126,7 @@ function render() {
 // Delete note by id
 function deleteNote(id) {
   notes = notes.filter(note => note.id !== id);
+  saveNotes();
   render();
 }
 
@@ -128,10 +159,16 @@ noteForm.addEventListener('submit', (e) => {
   };
 
   notes.push(newNote);
+  saveNotes();
   
   // Clear the input after adding
   noteInput.value = '';
 
+  render();
+});
+
+// Event listener for search input
+searchInput.addEventListener('input', () => {
   render();
 });
 

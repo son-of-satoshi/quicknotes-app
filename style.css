@@ -1,0 +1,169 @@
+/* Box-sizing reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #2563eb;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+}
+
+header p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+main {
+  flex: 1;
+  max-width: 700px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Flexbox form layout */
+#note-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+input[type="text"], select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #ffffff;
+}
+
+input[type="text"]:focus, select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+button {
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+#error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+#note-count {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+/* Note cards styling */
+#notes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.note-card {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-left-width: 6px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Category specific visual styles */
+.category-personal {
+  border-left-color: #0d9488; /* Teal */
+}
+
+.category-work {
+  border-left-color: #991b1b; /* Dark red */
+}
+
+.category-study {
+  border-left-color: #1d4ed8; /* Blue */
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #1f2937;
+  color: white;
+  font-size: 0.875rem;
+}
+
+/* Media query for screens 600px or narrower */
+@media (max-width: 600px) {
+  main {
+    margin: 1rem 0.5rem;
+    padding: 0;
+  }
+  .card {
+    padding: 1rem;
+  }
+}
